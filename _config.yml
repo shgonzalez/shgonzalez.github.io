@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Sergio G.
-email: sergiogonzalez.sh@gmail.com
+email: 
 description: > # this means to ignore newlines until "baseurl:"
   In this blog you will find some interesting tutorials and solutions I faced in this IT journey.
   My interests are RedHat, Centos, Python, PostgreSQL, VMware.
