@@ -16,7 +16,7 @@ the groups and authorizations in the Linux Domain.
 
 ![ldapscheme][goal]
 
-[goal]: https://www.draw.io/?lightbox=1&highlight=0000ff&nav=1&title=ldap%20network%20scheme#R7ZlNb9s4EIZ%2FjY81KFKS5WPixN1DCgTrw3ZPC1qiJW5ojUFRsb2%2FvqREWZ9O1FZYo0jVQ62X3%2FPMDDHKjKz2p8%2BSHpIvEDExwyg6zcjDDGMcLLD%2BzyjnUnEwIaUSSx5ZrRY2%2FD9mRWTVnEcsa3VUAELxQ1sMIU1ZqFoalRKO7W47EO1VDzS2K6Ja2IRUsF63v3ikEqs6%2FrJu%2BIPxOLFLB9gvG7Y0fIkl5Kldb4bJrnjK5j2t5rLrZgmN4NiQyOOMrCSAKn%2FtTysmjHErs5Xj1ldaL%2FuWLFVjBizsiFcqcnv2J57mJy2tBNeTZHaf6lzZpjgdM%2BOdGbk%2FJlyxzYGGpvWo3UFridoL27zjQqxAgCzGkshjQeRqncrQUtcbJPevTCquzX8neJxqUYGZJ1MSXlhjeIC3xPd1S%2F%2BY1Tn0ROzUkOyxPzPYMyXPuott%2FeR4gYVgvfST61q8x5o5dm2npIHbcaw7U%2Btn8WX62tb6hzX3FdO7PdPfhYq%2FMq09cKndGor9PsCe8nRSDCv9rNcDdt%2BCUrA3fKwgy0M3ePlDYPwwYNudbokljYzbVG0ppMwMqNzcmQrewm3DI6iH7sK3hc5DP4%2FO70fN5pyGiYQUch0x6E92ENquioMGh77QTDGpf2x4Gmt%2B11GiNrZ%2FmVJna3eaK9ASSJVADCkVT2CCpOjH0ujOZD1DUED4UkprLqqJIpolF18p6VV5jQzxRGi9RugtVhnkMrT792zYKCpjZrv51swsitkoomiOnAC3A9IJynfJBC0io5XnBwDa6Z%2BB6%2B3WXWC3y%2FTGuoQvuxgFvTplA7qI6MGZZ0zGHOaCbntkq%2Fh6olsmniHjhUc04yw7lPfXjp8MoCb9MUmxjq%2BDWXJ%2Fis2NPA%2B5kvw0V3Bk8h%2B9Pz3VVIHn%2B%2B3Ac%2FuB53v9uAu8CcIODRLAH4wAwbcjQHoGNgG%2Bsa91cnqs1fur6a2RtqwV66yFviP9DaQv8wymulEJzcf9hFaF%2F7sJbXSyGm1098MaffQtMr3R%2FWmNrpf%2FavS5u3Qr4e9CCKrXZya53qdJFMX4X4uUdzNSePBW%2BGCXgrvsFDMO%2Fv%2BuhcXb14K1xi%2BYkry%2Bo1cV8w0c3es5es%2Fsb9d8q9Vg8RYEzj25XrxVclmUlpGSGgA9w%2BIBn0%2BZOoJ8yeahgNyE0g7qFerPI1PV9KhTQmC%2FX9MvB%2BrCScrCxfuALpUwapZlnYAYTCYdnh4y%2F7QuOkks1PYr8sq7We5KJusA1MUTD9m8TFcGY26q2YnTl%2Bd2uLkOmZPms%2BhhrL7WtDAuJ8AY%2FMb4o7dQt4K%2FJcZ%2Bvf4b40iM%2BGYY9Wv99bv8SlP%2FjYE8fgM%3D
+[goal]: /assets/img/ldapscheme.jpg
 
 #### The environment:
 
@@ -137,12 +137,12 @@ Now run the following command to enable sssd for system authentication
  vim /etc/sssd/sssd.conf
  ```
  ```
- [sssd]
+[sssd]
  domains = sergio.lab
  services = nss, pam, pac
  config_file_version = 2
  
- [domain/sergio.lab]
+[domain/sergio.lab]
  id_provider = ad
  auth_provider = ad
  chpass_provider = ad
@@ -157,7 +157,7 @@ Now run the following command to enable sssd for system authentication
  ldap_referrals = false
  ```
  
- > notice ldap_referrals = false and ignore_group_members = true this can boost performance in large environments.
+ > notice ldap_referrals = false and ignore_group_members = true this can boost performance in large environments. Please check /etc/sssd/sssd.conf have "root" as owner and group, and 600 file permissions
  
  You can add more ad_server with comma separated values:
  ```
