@@ -19,9 +19,10 @@ description: > # this means to ignore newlines until "baseurl:"
   In this blog you will find some interesting tutorials and solutions I faced in this IT journey.
   My interests are RedHat, Centos, Python, PostgreSQL, VMware.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://www.shgonzalez.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: 
-github_username:  
+github_username: "shgonzalez"
+linkedin_username: "sergiogonzalez-sh"
 
 # Build settings
 markdown: kramdown
@@ -33,3 +34,6 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+
+disqus:
+    shortname: shg-1

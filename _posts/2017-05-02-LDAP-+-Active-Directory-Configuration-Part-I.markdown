@@ -1,6 +1,7 @@
 ---
 layout: post
 categories: Linux LDAP ActiveDirectory
+comments: true
 ---
 
 In this tutorial I going to show you how to setup a LDAP Directory working with Active Directory which holds the username and password but the LDAP Directory holds
