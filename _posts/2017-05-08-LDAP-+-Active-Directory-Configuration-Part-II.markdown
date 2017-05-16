@@ -2,6 +2,7 @@
 layout: post
 categories: Linux LDAP ActiveDirectory
 published: false
+comments: true
 ---
 
 In this section we are going to cover:
@@ -32,7 +33,7 @@ vim /etc/sysconfig/dirsrv.systemd
 LimitNOFILE=8192
 
 Now, run the /usr/sbin/setup-ds-admin.pl
-
+```
 ==============================================================================
 This program will set up the 389 Directory and Administration Servers.
 
@@ -43,7 +44,8 @@ Tips for using this program:
   - Type "Control-C" to cancel the setup program
 
 Would you like to continue with set up? [yes]:
-
+```
+```
 ==============================================================================
 Your system has been scanned for potential problems, missing patches,
 etc.  The following output is a report of the items found that need to
@@ -63,8 +65,9 @@ limit the number of simultaneous connections.
 
 WARNING  : The warning messages above should be reviewed before proceeding.
 
-Would you like to continue? [no]: **yes**
-
+Would you like to continue? [no]: 
+```
+```
 ==============================================================================
 Choose a setup type:
 
@@ -82,8 +85,9 @@ Choose a setup type:
 
 To accept the default shown in brackets, press the Enter key.
 
-Choose a setup type [2]: **ENTER**
-
+Choose a setup type [2]: 
+```
+```
 ==============================================================================
 Enter the fully qualified domain name of the computer
 on which you're setting up server software. Using the form
@@ -100,7 +104,8 @@ with the following command line option to specify the hostname:
     General.FullMachineName=your.hostname.domain.name
 
 Computer name [ds1.sergio.lab]: **ENTER**
-
+```
+```
 ==============================================================================
 The servers must run as a specific user in a specific group.
 It is strongly recommended that this user should have no privileges
@@ -112,9 +117,10 @@ If you have not yet created a user and group for the servers,
 create this user and group using your native operating
 system utilities.
 
-System User [dirsrv]: **ENTER**
-System Group [dirsrv]: **ENTER**
-
+System User [dirsrv]: 
+System Group [dirsrv]: 
+```
+```
 ==============================================================================
 Server information is stored in the configuration directory server.
 This information is used by the console and administration server to
@@ -135,18 +141,20 @@ If you do not yet have a configuration directory server, enter 'No' to
 be prompted to set up one.
 
 Do you want to register this software with an existing
-configuration directory server? [no]: **ENTER**
-
+configuration directory server? [no]: 
+```
+```
 ==============================================================================
 Please enter the administrator ID for the configuration directory
 server.  This is the ID typically used to log in to the console.  You
 will also be prompted for the password.
 
 Configuration directory server
-administrator ID [admin]: **ENTER**
+administrator ID [admin]: 
 Password:
 Password (confirm):
-
+```
+```
 ==============================================================================
 The information stored in the configuration directory server can be
 separated into different Administration Domains.  If you are managing
@@ -159,8 +167,9 @@ default.  Otherwise, enter some descriptive, unique name for the
 administration domain, such as the name of the organization
 responsible for managing the domain.
 
-Administration Domain [sergio.lab]: **ENTER**
-
+Administration Domain [sergio.lab]: 
+```
+```
 ==============================================================================
 The standard directory server network port number is 389.  However, if
 you are not logged as the superuser, or port 389 is in use, the
@@ -168,16 +177,18 @@ default value will be a random unused port number greater than 1024.
 If you want to use port 389, make sure that you are logged in as the
 superuser, that port 389 is not in use.
 
-Directory server network port [389]: **ENTER**
-
+Directory server network port [389]: 
+```
+```
 ==============================================================================
 Each instance of a directory server requires a unique identifier.
 This identifier is used to name the various
 instance specific files and directories in the file system,
 as well as for other uses as a server instance identifier.
 
-Directory server identifier [ds1]: **ENTER**
-
+Directory server identifier [ds1]: 
+```
+```
 ==============================================================================
 The suffix is the root of your directory tree.  The suffix must be a valid DN.
 It is recommended that you use the dc=domaincomponent suffix convention.
@@ -187,8 +198,9 @@ Setup will create this initial suffix for you,
 but you may have more than one suffix.
 Use the directory server utilities to create additional suffixes.
 
-Suffix [dc=sergio, dc=lab]: **ENTER**
-
+Suffix [dc=sergio, dc=lab]: 
+```
+```
 ==============================================================================
 Certain directory server operations require an administrative user.
 This user is referred to as the Directory Manager and typically has a
@@ -197,10 +209,11 @@ You will also be prompted for the password for this user.  The password must
 be at least 8 characters long, and contain no spaces.
 Press Control-B or type the word "back", then Enter to back up and start over.
 
-Directory Manager DN [cn=Directory Manager]: **ENTER**
+Directory Manager DN [cn=Directory Manager]: 
 Password:
 Password (confirm):
-
+```
+```
 ==============================================================================
 The Administration Server is separate from any of your web or application
 servers since it listens to a different port and access to it is
@@ -211,8 +224,9 @@ Server on. You should NOT use a port number which you plan to
 run a web or application server on, rather, select a number which you
 will remember and which will not be used for anything else.
 
-Administration port [9830]: **ENTER**
-
+Administration port [9830]: 
+```
+```
 ==============================================================================
 The interactive phase is complete.  The script will now set up your
 servers.  Enter No or go Back if you want to change something.
@@ -233,13 +247,80 @@ The admin server was successfully started.
 Admin server was successfully created, configured, and started.
 Exiting . . .
 Log file is '/tmp/setupy75GD8.log'
-
+```
 
 
 Ensure your services will run after reboot
-
+```
 systemctl enable dirsrv.target dirsrv@ds1.service dirsrv-admin.service
 systemctl start dirsrv.target dirsrv@ds1.service dirsrv-admin.service
+```
+Create LDAP Users
+
+First of all, we will create users with the same user ID as Active Directory domain, we can check with the id command, in my case I have two users
+
+id sgonzalez
+uid=972801108(sgonzalez) gid=972800513(domain users) grupos=972800513(domain users),972800572(denied rodc password replication group),972801115(critical servers & storage),972800512(domain admins)
+
+id mgonzalez
+uid=972801112(mgonzalez) gid=972800513(domain users) grupos=972800513(domain users)
+
+You can add user into LDAP via command line (ldapmodify -a) or GUI, in my case I use GUI. 
+note: For GUI you need java java-1.8.0-openjdk
+
+Run the following command 
+
+389-console -a http://ds1.sergio.lab:9830
+
+Enter the Directory Manager credentials
+
+![dslogin][dsloginpng]
+
+[dsloginpng]: /assets/img/dslogin.png
+
+
+Now "Open" the section of Directory Server
+
+![dssection][dssection]
+
+[dssection]: /assets/img/dssection.png
+
+
+In the Directory Tab, add the group and then the user
+
+![newgroup][newgroup]
+
+[newgroup]: /assets/img/newgroup.png
+
+Complete the Group name and the Group ID
+
+![groupname][groupname]
+
+[groupname]: /assets/img/groupname.png
+
+![groups][groups]
+
+[groups]: /assets/img/groups.png
+
+
+Now complete the user information, User ID and Posix information related.
+
+![newuser][newuser]
+
+[newuser]: /assets/img/newuser.png
+
+![username][username]
+
+[username]: /assets/img/username.png
+
+![posixuser][posixuser]
+
+[posixuser]: /assets/img/posixuser.png
+
+
+
+Now we have the user information, as you can see the password field is empty this is because we are going to recover the password from the Active Directory
+
 
 
 
@@ -277,4 +358,12 @@ Now it's time to set correct permissions
 
 chown dirsrv:dirsrv key3.db cert8.db pwdfile.txt
 chmod 640 key3.db cert8.db pwdfile.txt
+
+
+Now we must activate the certificates, in the Directory Server window go Configuration -> Encryption -> Enable SSL for this server -> Use this cipher family: RSA -> Allow client authentication
+and Save
+
+![tls][tls]
+
+[tls]: /assets/img/tls.png
 
