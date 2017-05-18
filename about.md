@@ -4,12 +4,8 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+I am a Bachelor Degree in Computer Science at Universidad Nacional de Asuncion, RedHat Certified System Administrator and RedHat Certified Engineer. I'm working at one of the most greats Telco in Paraguay as System Administrator. I have experience in virtualization, Linux, web programming, databases, backup solutions, storage networks and ITIL Process like CMDB.
+I like reading, taking online courses and take a walk. I'm married with Alicia and we have a wonderful child, his name is Mauricio. 
 
-You can find the source code for the Jekyll new theme at:
-{% include icon-github.html username="jekyll" %} /
-[minima](https://github.com/jekyll/minima)
+My profile: [LinkedIn](https://www.linkedin.com/in/sergiogonzalez-sh/)
 
-You can find the source code for Jekyll at
-{% include icon-github.html username="jekyll" %} /
-[jekyll](https://github.com/jekyll/jekyll)

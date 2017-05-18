@@ -1,7 +1,8 @@
 ---
 layout: post
 categories: Linux LDAP ActiveDirectory
-published: false
+title: "LDAP + Active Directory Configuration Part 2"
+date:   2017-05-18 08:00:01 -0400
 comments: true
 ---
 
@@ -9,30 +10,30 @@ In this section we are going to cover:
 * 389-Directory Server Setup
 * Configure TLS for secure connections with self signed certificate
 * Configure unauthenticated binds
-* LDAP Client configuration
+* Replication Master Single
 
 
-Now you have a fully authenticated Linux servers against ActiveDirectory, now it's to install 389 Directory Server
+Now you have fully authenticated Linux servers against Active Directory as indicated in [Part 1]({{ site.baseurl }}{% post_url 2017-05-02-LDAP-+-Active-Directory-Configuration-Part-I %}), now it's time to install 389 Directory Server
 
-389-Directory Server Setup
+### 389-Directory Server Setup
 
 
-Now install the EPEL report
-
+Now install the EPEL repo.
+```
 yum install -y epel-release.noarch
- 
+``` 
 Now install the following packages
-
+```
 yum install 389-ds-base 389-admin 389-console 389-ds-console 389-admin-console -y
-
+```
 
 After that configure the file descriptor parameter
-
+```
 vim /etc/sysconfig/dirsrv.systemd
 [Service]
 LimitNOFILE=8192
-
-Now, run the /usr/sbin/setup-ds-admin.pl
+```
+Now, run the /usr/sbin/setup-ds-admin.pl to complete the installation
 ```
 ==============================================================================
 This program will set up the 389 Directory and Administration Servers.
@@ -103,7 +104,7 @@ with the following command line option to specify the hostname:
 
     General.FullMachineName=your.hostname.domain.name
 
-Computer name [ds1.sergio.lab]: **ENTER**
+Computer name [ds1.sergio.lab]: 
 ```
 ```
 ==============================================================================
@@ -255,22 +256,31 @@ Ensure your services will run after reboot
 systemctl enable dirsrv.target dirsrv@ds1.service dirsrv-admin.service
 systemctl start dirsrv.target dirsrv@ds1.service dirsrv-admin.service
 ```
-Create LDAP Users
+Open your firewall for ldap and ldaps
+```
+firewall-cmd --permanent --add-service=ldap
+firewall-cmd --permanent --add-service=ldaps
+firewall-cmd --reload
+```
+> note: Repeat this in the second server (ds2.sergio.lab) 
 
-First of all, we will create users with the same user ID as Active Directory domain, we can check with the id command, in my case I have two users
+### Create LDAP Users
 
+First of all, we will create users with the same user ID as Active Directory domain, we can check with the id command, in my case I have two users. I will add users in the primary server, then with replication both server will have the users.
+```
 id sgonzalez
 uid=972801108(sgonzalez) gid=972800513(domain users) grupos=972800513(domain users),972800572(denied rodc password replication group),972801115(critical servers & storage),972800512(domain admins)
 
 id mgonzalez
 uid=972801112(mgonzalez) gid=972800513(domain users) grupos=972800513(domain users)
-
-You can add user into LDAP via command line (ldapmodify -a) or GUI, in my case I use GUI. 
-note: For GUI you need java java-1.8.0-openjdk
+``` 
+You can add user into LDAP via command line (ldapmodify -a) or GUI, I use GUI (Grahical User Interface). 
+> note: For GUI you need java java-1.8.0-openjdk and complete Server X installed in your system
 
 Run the following command 
-
+```
 389-console -a http://ds1.sergio.lab:9830
+```
 
 Enter the Directory Manager credentials
 
@@ -319,46 +329,46 @@ Now complete the user information, User ID and Posix information related.
 
 
 
-Now we have the user information, as you can see the password field is empty this is because we are going to recover the password from the Active Directory
+Now we have the user information, as you can see the password field is empty this is because we are going to recover the password from the Active Directory with the Plugin PAM Passthrough
 
 
 
 
-Configuring Certificates
+### Configuring Certificates
 
-Our 389 Directory Server is up and running, now we must configure certificates so our Linux clients can LogIn against Directory Server.
-In this approach we don't use a Certificate Authority instead we'll act as a Certificaty Authority (CA) signing our certificate in the same server.
-
+Our 389 Directory Server is up and running, now we must configure certificates so our Linux clients can log in against Directory Server. In this approach we don’t use a Certificate Authority instead we’ll act as a Certificaty Authority (CA) signing our certificate in the same server.
+```
  cd /etc/dirsrv/slapd-ds1/
  vim pwdfile.txt
  aStrongPasswordHere
+```
 
  Create a new certificate database
- 
+ ```
  certutil -N -d . -f pwdfile.txt
- 
+ ```
  Create de CA Certificate
- 
+ ```
  certutil -S -n "CA certificate" -s "cn=CA Server,dc=sergio,dc=lab" -x -t "CT,," -m 1000 -v 120 -d . -f pwdfile.txt -2
  Generating key. This may take a few moments...
 Is this a CA certificate [y/N]? y
 Enter the path length constraint, enter to skip [<0 for unlimited path]: >
 Is this a critical extension [y/N]? y
- 
+ ```
  Now we create the Server Cert which the issuer CA is the previous created
- 
- certutil -S -n "Server-Cert" -s "cn=ds.sergio.lab" -c "CA certificate" -t "u,u,u" -m 1001 -v 120 -d . -k rsa -f pwdfile.txt
- 
+ ```
+ certutil -S -n "Server-Cert" -s "cn=ds1.sergio.lab" -c "CA certificate" -t "u,u,u" -m 1001 -v 120 -d . -k rsa -f pwdfile.txt
+ ```
  Now export the CA certificate, which clients will verify to create a secure connection TLS/SSL. This is typically copied to /etc/openldap/cacerts/
- 
+ ```
  certutil -d . -L -n "CA certificate" -a > cacert.pem
- 
+ ```
  
 Now it's time to set correct permissions
-
+```
 chown dirsrv:dirsrv key3.db cert8.db pwdfile.txt
 chmod 640 key3.db cert8.db pwdfile.txt
-
+```
 
 Now we must activate the certificates, in the Directory Server window go Configuration -> Encryption -> Enable SSL for this server -> Use this cipher family: RSA -> Allow client authentication
 and Save
@@ -368,14 +378,182 @@ and Save
 [tls]: /assets/img/tls.png
 
 We need to configure the pin file, this file prevents enter the password during restart the service and need the password configured in the pwdfile.txt
-
+```
 cd /etc/dirsrv/slapd-ds1
 vim pin.txt
 Internal (Software) Token:aStrongPasswordHere
-
+```
+```
 systemctl restart dirsrv.target
+```
+
+Now our server ds1.sergio.lab is listening the 636 port for secure connections.
+
+In the second server (ds2.sergio.lab) we need to import the CA certificate.
+
+To achieve this we need copy the cacert.pem file created to second server.
+
+```
+scp /etc/dirsrv/slapd-ds1/cacert.pem ds2.sergio.lab:/root
+```
+In the second server run the following commands
+
+```
+cd /etc/dirsrv/slapd-ds2/
+ vim pwdfile.txt
+ aStrongPasswordHere
+```
+```
+ certutil -N -d . -f pwdfile.txt
+```
+``` 
+ certutil -d . -A -n "CA certificate" -a -i /root/cacert.pem -t "CT,," -f pwdfile.txt
+``` 
+ Create a request certificate 
+ ```
+  certutil -R -a -o ds2.csr -k rsa -s "cn=ds2.sergio.lab" -t "u,u,u" -m -v 48 -d . -8 ldap.sergio.lab -f pwdfile.txt
+ ``` 
+  Copy the ds2.csr to the primary server.
+
+  ```
+  scp /etc/dirsrv/slapd-ds2/ds2.csr ds1.sergio.lab:/root
+  ```
+
+ 
+  
+  In the primary server execute sign the request.
+  
+  ```
+  cd /etc/dirsrv/slapd-ds1
+ [root@ds1 slapd-ds1]# certutil -C -m 12345 -i /root/ds2.csr  -o /root/ds2.pem -a -c "CA certificate" -d . -f pwdfile.txt
+ ```
+ 
+ now copy to secondary server the file ds2.pem
+ ```
+ scp /root/ds2.csr ds2.sergio.lab:/root
+ ```
+ 
+ 
+ In the secondary server install the certificate
+ ```
+  certutil -d . -A -n "Server-Cert" -a -i /root/ds2.pem -t "u,u,u" -f pwdfile.txt
+ ```
+ 
+  **Repeat the process in the GUI to activate encryption and create the pin.txt file, as followed above.**
+
+  
+### Configure unauthenticated binds
+  
+  This setup is recommended in secure environment like behind a firewall, in a local network. This feature allows you to connect to our ldap without a password.
+ Now run the following command
+```
+ldapmodify -x -H ldap://localhost -D "cn=Directory Manager" -W
+Enter LDAP Password:
+dn: cn=config
+changetype: modify
+replace: nsslapd-allow-unauthenticated-binds
+nsslapd-allow-unauthenticated-binds: on
+ 
+```
+
+To exit this command press *CTRL-D*  
 
 
-Now our server is listening the 636 port for secure connections
+### Replication Master Single
 
-In the second server we need to import the CA certificate 
+The replication process copy one LDAP Database to another LDAP Database located in other server. To achieve this we have several types of replication but in this time we'll use Master Single Replication which means that a primary server have a Read-Write database (supplier) and other server acts as Read-Only database (consumer).
+
+First, we need to create a SUPPLIER BIND DN ENTRY in the consumer server, in our case on the ds2.sergio.lab
+```
+systemctl stop dirsrv.target
+```
+```
+vim /etc/dirsrv/slapd-ds2/dse.ldif
+```
+
+Add this lines at the end
+```
+dn: cn=replication manager,cn=config
+objectClass: inetorgperson
+objectClass: person
+objectClass: top
+cn: replication manager
+sn: RM
+userPassword: password
+passwordExpirationTime: 20380119031407Z
+nsIdleTimeout: 0
+```
+```
+ systemctl start dirsrv.target
+``` 
+ Now connect to the Supplier console (ds1.sergio.lab), go to Directory Server Administration -> Configuration -> Replication, Enable the changelog and Save.
+ 
+ ![enablechangelog][enablechangelog]
+
+[enablechangelog]: /assets/img/enablechangelog.png
+
+In the navigation tree on the Configuration tab, expand the Replication node, and select the database to replicate, UserRoot is the database who has user information.
+Now enable the replica as follow.
+
+![enablereplica][enablereplica]
+
+[enablereplica]: /assets/img/enablereplica.png
+
+
+
+Ok, now go on the consumer server ds2.sergio.lab and select the Configuration tab, expand replication and select the database replica (UserRoot). Now enable replica as Dedicated consumer and add the supplier bind dn.
+
+![replicanode2][replicanode2]
+
+[replicanode2]: /assets/img/replicanode2.png
+
+
+Now we need to create a Replication Agreement in ds1.sergio.lab (Supplier).
+
+In the Configuration tab, right-click the userRoot database and select New Replication Agreement 
+
+![repagreement][repagreement]
+
+[repagreement]: /assets/img/repagreement.png
+
+
+Next write a Name and Description.
+
+Next complete as follow, with the supplier bind information.
+
+![replicaagreement1][replicaagreement1]
+
+[replicaagreement1]: /assets/img/replicaagreement1.png
+
+
+Uncheck Fractional Replication, we do not use it.
+
+Set always in sync.
+
+Check Initialize consumer now, this will try to copy the database to consumer.
+
+
+![iniconsumer][iniconsumer]
+
+[iniconsumer]: /assets/img/iniconsumer.png
+
+
+Then will show a Summary and will begin the synchronization.
+
+After that you can check the process by looking the replication agreement.
+
+![replicasum][replicasum]
+
+[replicasum]: /assets/img/replicasum.png
+
+
+If you reached at this point means you are very patience and you have a full ldap with replication, now remember, all your changes must be done in the supplier server (ds1.sergio.lab) because is the read-write replica.
+
+In the next part we will cover the load balance between ldap servers and configure the linux clients. See you on the flipside :thumbsup:
+
+Your thoughts and suggestions are always welcome, please feel free to comment or ask questions if you need a hand. 
+
+
+References:
+* [Directory Server Replication](https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html/administration_guide/managing_replication-configuring_single_master_replication)
+* man certutil
