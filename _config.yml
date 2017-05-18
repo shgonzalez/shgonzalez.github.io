@@ -19,7 +19,7 @@ description: > # this means to ignore newlines until "baseurl:"
   In this blog you will find some interesting tutorials and solutions I faced in this IT journey.
   My interests are RedHat, Centos, Python, PostgreSQL, VMware.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.shgonzalez.com" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://blog.shgonzalez.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: 
 github_username: "shgonzalez"
 linkedin_username: "sergiogonzalez-sh"

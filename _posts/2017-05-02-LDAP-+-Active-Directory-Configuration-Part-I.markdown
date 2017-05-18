@@ -2,6 +2,8 @@
 layout: post
 categories: Linux LDAP ActiveDirectory
 comments: true
+title: "LDAP + Active Directory Configuration Part 1"
+date:   2017-05-02 16:16:01 -0400
 ---
 
 In this tutorial I going to show you how to setup a LDAP Directory working with Active Directory which holds the username and password but the LDAP Directory holds
@@ -21,7 +23,7 @@ the groups and authorizations in the Linux Domain.
 
 #### The environment:
 
-* One Active Directory called ad.sergio.lab
+* One Active Directory called ad.sergio.lab (Windows 2012 Server)
 * Workgroup: SERGIO
 
 
@@ -179,6 +181,15 @@ Now run the following command to enable sssd for system authentication
 
 **This step is repeated in the second Linux Server.**
 
-In the next part of the tutorial we will install the 389 Directory Server, create a self signed certificate for clients and configure ldap clients. See you on the flipside :thumbsup:
+In the next part of the tutorial we will install the 389 Directory Server, create a self signed certificate for clients and configure ldap replication. See you on the flipside :thumbsup:
 
 Your thoughts and suggestions are always welcome, please feel free to comment or ask questions if you need a hand. 
+
+
+References:  
+* man sssd
+* man sssd-ad
+* man sssd-ldap
+* man sssd.conf
+* [RedHat Documentation](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Windows_Integration_Guide/sssd-ad-proc.html)
+* [PAM Passthrough Plugin](https://access.redhat.com/documentation/en-US/Red_Hat_Directory_Server/10/html/Administration_Guide/pam-pta.html)
