@@ -13,7 +13,8 @@ the groups and authorizations in the Linux Domain.
 
 * 2 389-Directory Server on centos 7
 * The 2 servers above as members of the Windows Domain and enabling the PAM Passthrough Plugin 
-* Replication Master Single between Directory Servers
+* 1 Load Balancer 
+* Replication Master Single between 398 Directory Servers
 
 #### The goal
 
@@ -179,11 +180,11 @@ Now run the following command to enable sssd for system authentication
  
  so far, we have our Linux server into Windows domain.
 
-**This step is repeated in the second Linux Server.**
+**These steps are repeated in the second Linux Server ds2.sergio.lab**
 
-In the next part of the tutorial we will install the 389 Directory Server, create a self signed certificate for clients and configure ldap replication. See you on the flipside :thumbsup:
+In the [next part]({{ site.baseurl }}{% post_url 2017-05-08-LDAP-+-Active-Directory-Configuration-Part-II %}) of the tutorial we will install the 389 Directory Server, create a self signed certificate for clients and configure ldap replication. See you on the flipside :thumbsup:
 
-Your thoughts and suggestions are always welcome, please feel free to comment or ask questions if you need a hand. 
+
 
 
 References:  
@@ -193,3 +194,6 @@ References:
 * man sssd.conf
 * [RedHat Documentation](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Windows_Integration_Guide/sssd-ad-proc.html)
 * [PAM Passthrough Plugin](https://access.redhat.com/documentation/en-US/Red_Hat_Directory_Server/10/html/Administration_Guide/pam-pta.html)
+
+
+Your thoughts and suggestions are always welcome, please feel free to comment or ask questions if you need a hand. 

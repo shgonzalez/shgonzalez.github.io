@@ -262,7 +262,7 @@ firewall-cmd --permanent --add-service=ldap
 firewall-cmd --permanent --add-service=ldaps
 firewall-cmd --reload
 ```
-> note: Repeat this in the second server (ds2.sergio.lab) 
+> note: Repeat these steps in the second server (ds2.sergio.lab) 
 
 ### Create LDAP Users
 
@@ -275,7 +275,7 @@ id mgonzalez
 uid=972801112(mgonzalez) gid=972800513(domain users) grupos=972800513(domain users)
 ``` 
 You can add user into LDAP via command line (ldapmodify -a) or GUI, I use GUI (Grahical User Interface). 
-> note: For GUI you need java java-1.8.0-openjdk and complete Server X installed in your system
+> note: For GUI you need java-1.8.0-openjdk and complete Server X installed in your system
 
 Run the following command 
 ```
@@ -549,11 +549,14 @@ After that you can check the process by looking the replication agreement.
 
 If you reached at this point means you are very patience and you have a full ldap with replication, now remember, all your changes must be done in the supplier server (ds1.sergio.lab) because is the read-write replica.
 
-In the next part we will cover the load balance between ldap servers and configure the linux clients. See you on the flipside :thumbsup:
+In the [next part]({{ site.baseurl }}{% post_url 2017-05-08-LDAP-+-Active-Directory-Configuration-Part-III %}) we will cover the load balance between ldap servers, configuration of PAM Passthrough and configuration of the linux clients. See you on the flipside :thumbsup:
 
-Your thoughts and suggestions are always welcome, please feel free to comment or ask questions if you need a hand. 
+
 
 
 References:
 * [Directory Server Replication](https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html/administration_guide/managing_replication-configuring_single_master_replication)
 * man certutil
+
+
+Your thoughts and suggestions are always welcome, please feel free to comment or ask questions if you need a hand. 
