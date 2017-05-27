@@ -4,6 +4,8 @@ categories: Linux LDAP ActiveDirectory
 title: "LDAP + Active Directory Configuration Part 3"
 date:   2017-05-19 08:00:01 -0400
 comments: true
+image: /assets/img/ldapscheme.jpg
+description: In this tutorial I going to show you how to setup a LDAP Directory working with Active Directory which holds the username and password but the LDAP Directory holds the groups and authorizations in the Linux Domain.
 ---
 
 In this section we are going to cover:
