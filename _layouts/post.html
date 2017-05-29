@@ -1,0 +1,33 @@
+---
+layout: default
+---
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+        {{ page.date | date: date_format }}
+      </time>
+      {% if page.author %}
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>
+      {% endif %}</p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    {{ content }}
+
+    <p>Share this on: 
+      <a title="Share on Facebook"  target="_black" href="http://www.facebook.com/sharer/sharer.php?u={{ page.url | prepend: site.url }}"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+      <a title="Share on Twitter" target="_black" href="http://twitter.com/intent/tweet?text={{ page.title }}&url={{ page.url | prepend: site.url }}"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+      <a title="Share on Google Plus" target="_black" href="https://plus.google.com/share?url={{ page.url | prepend: site.url }}"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
+      <a title="Share on Whatsaap" href="whatsapp://send?text={{ page.url | prepend: site.url | cgi_escape}}"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
+      <a title="Share on Telegram" href="https://telegram.me/share/url?url={{ page.url | prepend: site.url | cgi_escape }}"><i class="fa fa-telegram" aria-hidden="true"></i></a>
+    </p>
+  </div>
+
+  {% if site.disqus.shortname %}
+    {% include disqus_comments.html %}
+  {% endif %}
+</article>
