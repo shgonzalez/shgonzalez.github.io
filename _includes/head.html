@@ -20,6 +20,8 @@
 <!-- facebook Open Graph Metadatas -->
 <!--meta content="your_facebook_app_id" property="fb:app_id"-->
 <meta content="{{ site.title }}" property="og:site_name">
+<meta name="twitter:site" content="{{ site.title }}">
+<meta name="twitter:card" content="photo" />
 {% if page.title %}
   <meta content="{{ page.title }}" property="og:title">
   <meta name="twitter:title" content="{{ page.title }}">
@@ -49,8 +51,10 @@
 {% endif %}
 {% if page.image %}
   <meta content="{{ site.url }}{{ page.image }}" property="og:image">
+  <meta name="twitter:image:src" content="{{ site.url }}{{ page.image }}">
 {% else %}
-  <meta content="/img/logo-high-resolution.png" property="og:image">
+  <meta content="{{ site.url }}/logo.png" property="og:image">
+  <meta name="twitter:image:src" content="{{ site.url }}/logo.png">
 {% endif %}
 {% if page.categories %}
   {% for category in page.categories limit:1 %}
@@ -64,7 +68,7 @@
 {% endif %}
 
 {% if page.header-img %}
-  <meta name="twitter:image:src" content="{{ site.url }}/{{ page.header-img }}">
+  
 {% endif %}
 
 <!-- facebook Open Graph Metadatas -->
