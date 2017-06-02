@@ -1,0 +1,51 @@
+# extended LDIF
+#
+# LDAPv3
+# base <dc=sergio,dc=lab> with scope subtree
+# filter: cn=ldapuxprofile
+# requesting: ALL
+#
+
+# ldapuxprofile, ldapuxprofile, sergio.lab
+dn: cn=ldapuxprofile,ou=ldapuxprofile,dc=sergio,dc=lab
+preferredServerList: ldap3.sergio.lab:389 ldap4.sergio.lab:3
+ 89
+bindTimeLimit: 3
+defaultSearchBase: dc=sergio,dc=lab
+authenticationMethod: tls:simple
+serviceSearchDescriptor: passwd:ou=people,dc=sergio,dc=lab?sub?
+ (objectclass=posixaccount)
+serviceSearchDescriptor: group:ou=groups,dc=sergio,dc=lab?sub?(
+ objectclass=posixgroup)
+serviceSearchDescriptor: shadow:ou=people,dc=sergio,dc=lab?sub?
+ (objectclass=shadowaccount)
+serviceSearchDescriptor: pam:ou=people,dc=sergio,dc=lab?sub?(ob
+ jectclass=posixaccount)
+serviceSearchDescriptor: rpc:dc=sergio,dc=lab?sub?(objectclass=
+ oncrpc)
+serviceSearchDescriptor: protocols:dc=sergio,dc=lab?sub?(object
+ class=ipprotocol)
+serviceSearchDescriptor: networks:dc=sergio,dc=lab?sub?(objectc
+ lass=ipnetwork)
+serviceSearchDescriptor: hosts:dc=sergio,dc=lab?sub?(objectclas
+ s=iphost)
+serviceSearchDescriptor: services:dc=sergio,dc=lab?sub?(objectc
+ lass=ipservice)
+serviceSearchDescriptor: printers:dc=sergio,dc=lab?sub?(objectc
+ lass=printerlpr)
+serviceSearchDescriptor: automount:dc=sergio,dc=lab?sub?(object
+ class=automount)
+serviceSearchDescriptor: netgroup:dc=sergio,dc=lab?sub?(objectc
+ lass=nisnetgroup)
+cn: ldapuxprofile
+objectClass: top
+objectClass: duaconfigprofile
+attributeMap: passwd:userpassword=*NULL*
+attributeMap: shadow:userpassword=*NULL*
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
