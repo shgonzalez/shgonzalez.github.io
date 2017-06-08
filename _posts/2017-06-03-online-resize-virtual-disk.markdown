@@ -4,7 +4,7 @@ categories: Linux Vmware Postgres
 title: Partition resize in a virtual disk 
 date:   2017-06-03 09:00:01 -0400
 comments: true
-image: /assets/img/resizepartition.png
+image: /assets/img/resizepartition2.png
 description: How to resize a partition in a virtual disk on vmware with 0 downtime using Centos 7 and PostgreSQL 9.6.
 tags: centos redhat linux virtual disk vmdk vmware postgresql rhel 
 published: true
@@ -12,7 +12,7 @@ published: true
 
 ![resizepartition][resizepartition]
 
-[resizepartition]: /assets/img/resizepartition.png
+[resizepartition]: /assets/img/resizepartition2.png
 
 
 ### Intro
