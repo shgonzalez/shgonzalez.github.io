@@ -4,11 +4,18 @@ categories: Storage Windows
 title: Identify a LUN disk in Windows Server 
 date:   2017-06-23 09:00:01 -0400
 comments: true
-image: /assets/img/datacenter.jpg
+image: /assets/img/fccable.jpg
 description: How to identify a storage LUN in Windows Server
 tags: storage san windows server 
 published: true
 ---
+
+![fccable][fccable]
+
+[fccable]: /assets/img/fccable.jpg
+
+
+
 
 Mapping the Logical Unit Number in Windows can be difficult when you have lots of disks, in a SAN environment you may need resize a LUN or delete one. With these simple steps you can identify a LUN disk in Windows Server.
 
