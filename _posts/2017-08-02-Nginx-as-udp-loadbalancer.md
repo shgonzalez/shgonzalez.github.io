@@ -122,13 +122,13 @@ loadbalancer    IN      A       10.0.2.17
 client1 IN      A       10.0.2.18
 
 ```
-```
+```bash
 systemctl enable named
 ```
-```
+```bash
 systemctl start named
 ```
-``` 
+```bash 
 firewall-cmd --permantent --add-service=dns && firewall-cmd --reload
 ```
 
@@ -209,18 +209,18 @@ In this configuration our dns2.sergio.lab acts as slave DNS.
 
 As we made it in the dns1, we need to activate the service.
 
-```
+```bash
 systemctl enable named
 ```
-```
+```bash
 systemctl start named
 ```
-``` 
+```bash
 firewall-cmd --permantent --add-service=dns && firewall-cmd --reload
 ```
 
 After that, we have to configure our load balancer (loadbalancer.sergio.lab)
-```
+```bash
 yum install epel-release -y
 ```
 ```
@@ -231,7 +231,7 @@ baseurl=http://nginx.org/packages/mainline/centos/7/$basearch/
 gpgcheck=0
 enabled=1
 ```
-```
+```bash
 yum  install -y nginx
 ```
 Then configure nginx.conf for [load balance](https://www.nginx.com/blog/load-balancing-dns-traffic-nginx-plus/).
@@ -259,6 +259,23 @@ stream {
 ```
 
 With this configuration the load balance is Round Robin.
+
+If you have selinux activated the service won't start because nginx can not bind port 53. To allow this, issue this command
+
+> check your selinux status with sestatus command
+
+```bash
+ausearch -c 'nginx' --raw | audit2allow -M my-nginx
+semodule -i my-nginx.pp
+```
+Now you can enable and run nginx
+
+```bash
+systemctl enable nginx
+systemctl start nginx
+firewall-cmd --permantent --add-service=dns && firewall-cmd --reload
+```
+
 
 You can check you configuration using dig
 
