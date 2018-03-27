@@ -93,7 +93,7 @@ lan900 current values:
    Speed = 2 Gbps Full Duplex
    MTU = 1500
    Virtual Maximum Transmission Unit = 0
-   MAC Address = 0x00215a797f48
+   MAC Address = 0x00215a797f47
    Network Management ID = 17
    Features = Linkagg Interface
               IPV4 Recv CKO
@@ -123,11 +123,11 @@ nwmgr -s -A all --sa --fr cu -c lan900
 ```
 
 
-### Check proceses associated by a port, for example port tcp:22
+### Check processes associated by a port, for example port tcp:22
 ```
  lsof -i tcp:22
 ```
-### Verifiy the switch which is connected with CDP  (Cisco Discovery Protocol) 
+### Verify the switch which is connected with CDP  (Cisco Discovery Protocol) 
 ```
 tcpdump -nn -v -i lan900 -s 1500 -c 1 'ether[20:2] == 0x2000' 
 ```
