@@ -4,7 +4,7 @@ categories: Linux HA
 title: How to solve "Unable to communicate" error in Pacemaker
 date:   2017-10-2 20:00:01 -0300
 comments: true
-image: /assets/img/nginx-tunnel.png
+image: /assets/img/Pacemaker.png
 description: Solving errors when creating clusters with Pacemaker
 tags: pacemaker ha high availability linux centos 7 redhat 7 
 published: true
