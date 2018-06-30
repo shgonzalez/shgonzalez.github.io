@@ -190,4 +190,4 @@ As mentioned in the YUM log, the packages were removed and then were installed a
 Ok, that's all folks.
 
 
-Image: https://pixabay.com/es/elefante-dibujo-l%C3%A1piz-animal-831362/
+Image of [elephant](https://pixabay.com/es/elefante-dibujo-l%C3%A1piz-animal-831362/)
