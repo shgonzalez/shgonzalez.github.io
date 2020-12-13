@@ -25,6 +25,7 @@ layout: default
       <a title="Share on Google Plus" rel="nofollow" target="_blank" href="https://plus.google.com/share?url={{ site.url }}{{ page.url }}"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
       <a title="Share on Whatsaap" rel="nofollow" target="_blank" href="whatsapp://send?text={{ page.url | prepend: site.url | cgi_escape}}"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
       <a title="Share on Telegram" href="https://telegram.me/share/url?url={{ page.url | prepend: site.url | cgi_escape }}"><i class="fa fa-telegram" aria-hidden="true"></i></a>
+      <a title="Share on LinkedIn" href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ site.baseurl }}{{ page.url }}&title={{ page.title }}&summary={{ page.description }}&source={{ site.title }}"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
     </p>
   </div>
 {% include  fb-share.html %}
