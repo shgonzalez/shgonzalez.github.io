@@ -4,7 +4,7 @@ categories: Cloud AWS Windows
 title: Configuracion de PuTTY para acceder a instancias en AWS via Bastion Host.
 date:   2020-12-12 09:00:00 -0400
 comments: true
-image: /assets/img/aws_log.jpg
+image: /assets/img/aws_logo.jpg
 description: Guia practica para acceder a instancias de AWS utilizando ssh con claves publicas/privadas por medio de un bastion host.
 tags: PuTTY putty ssh aws instances Amazon Web Services keys agent forwarding pageant puttygen
 published: true
